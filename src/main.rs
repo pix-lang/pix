@@ -25,19 +25,22 @@ fn run_promt() {
         io::stdout().flush().unwrap();
 
         let line = line.trim().to_string();
+        let line_chars: Vec<char> = line.chars().collect();
 
-        println!("{}", line);
+        let mut scanner = parser::tokens::Scanner {
+            source: line,
+            source_chars: line_chars,
+            ..Default::default()
+        };
+
+        scanner.scan_tokens();
+        println!("{:?}", scanner.token_list);
     }
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let len_args: usize = args.len();
-
-    let scanner = parser::tokens::Scanner {
-        source: String::new(),
-        ..Default::default()
-    };
 
     if len_args > 2 {
         println!("Usage: pix [file]");
